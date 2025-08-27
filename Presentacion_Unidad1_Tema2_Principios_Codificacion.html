@@ -1,0 +1,1782 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Principios de Codificación - Unidad 1 Tema 2</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2E86AB;
+            --secondary-color: #A23B72;
+            --accent-color: #F18F01;
+            --success-color: #4CAF50;
+            --warning-color: #FF9800;
+            --background-light: #F8F9FA;
+            --background-white: #FFFFFF;
+            --text-dark: #2C3E50;
+            --text-medium: #6C757D;
+            --text-light: #ADB5BD;
+            --border-light: #E9ECEF;
+            --shadow-light: rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: linear-gradient(135deg, var(--background-light) 0%, #E8F4FD 100%);
+            overflow-x: hidden;
+        }
+
+        .presentation-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Ancho especial para slides con código */
+        .slide.code-slide .presentation-container {
+            max-width: 1600px;
+        }
+
+        .slide {
+            background: var(--background-white);
+            border-radius: 16px;
+            margin: 2rem 0;
+            padding: 2rem;
+            box-shadow: 0 8px 32px var(--shadow-light);
+            border: 1px solid var(--border-light);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideIn 0.6s ease-out forwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide:nth-child(even) {
+            animation-delay: 0.2s;
+        }
+
+        .slide:nth-child(odd) {
+            animation-delay: 0.1s;
+        }
+
+        .slide-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .slide-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .slide-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-medium);
+            font-weight: 300;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .info-card {
+            background: linear-gradient(135deg, #E3F2FD 0%, #F3E5F5 100%);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px var(--shadow-light);
+        }
+
+        .info-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .info-card p {
+            color: var(--text-medium);
+            font-size: 0.95rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin: 2rem 0 1.5rem 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-color), var(--warning-color));
+            border-radius: 2px;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .principle-card {
+            background: var(--background-white);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .principle-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--success-color), var(--primary-color));
+        }
+
+        .principle-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 32px var(--shadow-light);
+            border-color: var(--primary-color);
+        }
+
+        .principle-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .principle-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-right: 1rem;
+        }
+
+        .principle-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .principle-description {
+            color: var(--text-medium);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .code-container {
+            background: #1e1e1e;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            position: relative;
+            overflow-x: auto;
+            min-width: 0;
+            width: 100%;
+        }
+
+        .code-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #333;
+        }
+
+        .code-dots {
+            display: flex;
+            gap: 6px;
+            margin-right: 1rem;
+        }
+
+        .code-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .code-dot:nth-child(1) { background: #FF5F56; }
+        .code-dot:nth-child(2) { background: #FFBD2E; }
+        .code-dot:nth-child(3) { background: #27CA3F; }
+
+        .code-title {
+            color: #E6E6E6;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .code-content {
+            font-family: 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #E6E6E6;
+            overflow-x: auto;
+            white-space: pre;
+            tab-size: 4;
+            -moz-tab-size: 4;
+            -o-tab-size: 4;
+            letter-spacing: 0.5px;
+        }
+
+        .code-content .keyword { color: #FF7F50; }
+        .code-content .string { color: #98C379; }
+        .code-content .comment { color: #7C7C7C; }
+        .code-content .function { color: #61AFEF; }
+        .code-content .class { color: #E06C75; }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        /* Grid especial para slides con código */
+        .slide.has-code .comparison-grid {
+            gap: 1rem;
+        }
+
+        .slide.has-code .comparison-card {
+            min-width: 0;
+        }
+
+        .comparison-card {
+            padding: 1.2rem;
+            border-radius: 12px;
+            border: 2px solid;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        .bad-example {
+            background: #FFEBEE;
+            border-color: #F44336;
+        }
+
+        .good-example {
+            background: #E8F5E8;
+            border-color: #4CAF50;
+        }
+
+        .comparison-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .comparison-title::before {
+            content: '';
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+
+        .bad-example .comparison-title::before {
+            background: #F44336;
+        }
+
+        .good-example .comparison-title::before {
+            background: #4CAF50;
+        }
+
+        .activity-card {
+            background: linear-gradient(135deg, #FFF3E0 0%, #E1F5FE 100%);
+            border: 1px solid var(--accent-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+
+        .activity-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .activity-number {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 1rem;
+        }
+
+        .activity-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .activity-duration {
+            background: var(--warning-color);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-left: auto;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #E3F2FD 0%, #F3E5F5 100%);
+            border-left: 4px solid var(--primary-color);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+            position: relative;
+        }
+
+        .highlight-box::before {
+            content: '💡';
+            position: absolute;
+            left: -12px;
+            top: 1rem;
+            background: var(--primary-color);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+
+        .highlight-title {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .tool-item {
+            background: var(--background-white);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .tool-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px var(--shadow-light);
+            border-color: var(--primary-color);
+        }
+
+        .tool-name {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .tool-description {
+            font-size: 0.9rem;
+            color: var(--text-medium);
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1000;
+        }
+
+        .nav-button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            margin: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px var(--shadow-light);
+        }
+
+        .nav-button:hover {
+            background: var(--secondary-color);
+            transform: scale(1.1);
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--border-light);
+            z-index: 1000;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .presentation-container {
+                padding: 1rem;
+            }
+
+            .slide {
+                padding: 1.5rem;
+                margin: 1rem 0;
+            }
+
+            .slide-title {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .comparison-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .comparison-card {
+                padding: 1rem;
+            }
+
+            .code-container {
+                padding: 1rem;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .navigation {
+                bottom: 1rem;
+                right: 1rem;
+            }
+
+            .nav-button {
+                width: 48px;
+                height: 48px;
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .slide-title {
+                font-size: 1.8rem;
+            }
+
+            .principle-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .principle-icon {
+                margin-bottom: 0.5rem;
+                margin-right: 0;
+            }
+
+            .activity-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .activity-duration {
+                margin-left: 0;
+                margin-top: 0.5rem;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <div class="presentation-container">
+        <!-- Slide 1: Título -->
+        <div class="slide" id="slide-1">
+            <div class="slide-header">
+                <h1 class="slide-title">Principios de Codificación</h1>
+                <p class="slide-subtitle">Unidad 1, Tema 2 - Codificación y Pruebas del Software</p>
+            </div>
+            
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>Duración</h3>
+                    <p>60 minutos</p>
+                </div>
+                <div class="info-card">
+                    <h3>Modalidad</h3>
+                    <p>Presencial</p>
+                </div>
+                <div class="info-card">
+                    <h3>Programa</h3>
+                    <p>Ingeniería de Software</p>
+                </div>
+                <div class="info-card">
+                    <h3>Institución</h3>
+                    <p>FESC</p>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h3 class="highlight-title">Competencia Específica</h3>
+                <p>Determinar las posibles fallas detectadas en los diferentes niveles de prueba de software según los principios de codificación.</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Objetivos -->
+        <div class="slide" id="slide-2">
+            <h2 class="section-title">Objetivos de Aprendizaje</h2>
+            
+            <div class="content-grid">
+                <div class="principle-card">
+                    <div class="principle-header">
+                        <div class="principle-icon">1</div>
+                        <h3 class="principle-title">Identificar</h3>
+                    </div>
+                    <p class="principle-description">Los principios fundamentales de preparación para la codificación de software</p>
+                </div>
+
+                <div class="principle-card">
+                    <div class="principle-header">
+                        <div class="principle-icon">2</div>
+                        <h3 class="principle-title">Aplicar</h3>
+                    </div>
+                    <p class="principle-description">Principios de programación que garanticen código limpio y mantenible</p>
+                </div>
+
+                <div class="principle-card">
+                    <div class="principle-header">
+                        <div class="principle-icon">3</div>
+                        <h3 class="principle-title">Implementar</h3>
+                    </div>
+                    <p class="principle-description">Principios de despliegue para asegurar la calidad del software en producción</p>
+                </div>
+
+                <div class="principle-card">
+                    <div class="principle-header">
+                        <div class="principle-icon">4</div>
+                        <h3 class="principle-title">Evaluar</h3>
+                    </div>
+                    <p class="principle-description">La calidad del código mediante la aplicación de buenas prácticas de codificación</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Principios de Preparación -->
+        <div class="slide has-code" id="slide-3">
+            <h2 class="section-title">2.1 Principios de Preparación</h2>
+            
+            <div class="highlight-box">
+                <h3 class="highlight-title">¿Qué son los Principios de Preparación?</h3>
+                <p>Imagina que vas a cocinar un platillo complejo. Antes de encender la estufa, necesitas: leer la receta completa, reunir todos los ingredientes, preparar los utensilios y organizar tu espacio de trabajo. Los principios de preparación en programación funcionan de la misma manera: son todas las actividades que realizamos <strong>antes</strong> de escribir la primera línea de código.</p>
+            </div>
+
+            <div class="content-grid">
+                <div class="principle-card">
+                    <div class="principle-header">
+                        <div class="principle-icon">📋</div>
+                        <h3 class="principle-title">Planificación del Código</h3>
+                    </div>
+                    <p class="principle-description">
+                        <strong>¿Por qué planificar?</strong><br>
+                        Programar sin planificación es como construir una casa sin planos. Incluye:
+                        <br>• Comprensión del problema
+                        <br>• Diseño previo
+                        <br>• Definición de estándares
+                        <br>• Configuración del entorno
+                    </p>
+                </div>
+
+                <div class="principle-card">
+                    <div class="principle-header">
+                        <div class="principle-icon">⚙️</div>
+                        <h3 class="principle-title">Análisis de Requerimientos</h3>
+                    </div>
+                    <p class="principle-description">
+                        <strong>Condiciones especiales:</strong><br>
+                        • Rendimiento: ¿Qué tan rápido debe responder?
+                        <br>• Seguridad: ¿Qué datos son sensibles?
+                        <br>• Compatibilidad: ¿En qué sistemas debe funcionar?
+                        <br>• Tecnologías: ¿Qué herramientas usar?
+                    </p>
+                </div>
+            </div>
+
+            <div class="code-container">
+                <div class="code-header">
+                    <div class="code-dots">
+                        <div class="code-dot"></div>
+                        <div class="code-dot"></div>
+                        <div class="code-dot"></div>
+                    </div>
+                    <div class="code-title">Configuración de Proyecto Python</div>
+                </div>
+                <div class="code-content">
+<span class="comment"># Ejemplo de configuración de proyecto Python</span>
+<span class="keyword">mkdir</span> principios-codificacion
+<span class="keyword">cd</span> principios-codificacion
+<span class="keyword">python</span> -m venv venv
+<span class="keyword">source</span> venv/bin/activate    <span class="comment"># En Windows: venv\Scripts\activate</span>
+<span class="keyword">pip</span> install -r requirements.txt
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Principios SOLID - Introducción -->
+        <div class="slide" id="slide-4">
+            <h2 class="section-title">2.2 Principios SOLID</h2>
+            
+            <div class="highlight-box">
+                <h3 class="highlight-title">Las "Reglas de Oro" para escribir buen código</h3>
+                <p>Los principios SOLID son como las reglas de etiqueta para el código. Cada letra representa una regla fundamental.</p>
+            </div>
+
+            <div class="content-grid">
+                <div class="principle-card">
+                    <div class="principle-header">
+                        <div class="principle-icon">S</div>
+                        <h3 class="principle-title">Single Responsibility</h3>
+                    </div>
+                    <p class="principle-description">
+                        <strong>Una sola responsabilidad:</strong><br>
+                        Cada clase debe hacer <strong>una sola cosa</strong> y hacerla bien.
+                        <br><br>
+                        <strong>Analogía:</strong> Un cuchillo corta, un tenedor pincha. No harías un "cuchillo-tenedor-cuchara".
+                    </p>
+                </div>
+
+                <div class="principle-card">
+                    <div class="principle-header">
+                        <div class="principle-icon">O</div>
+                        <h3 class="principle-title">Open/Closed</h3>
+                    </div>
+                    <p class="principle-description">
+                        <strong>Abierto para extensión, cerrado para modificación:</strong><br>
+                        Debes poder agregar nuevas funcionalidades sin cambiar el código existente.
+                        <br><br>
+                        <strong>Analogía:</strong> Como las apps que instalas sin modificar el sistema operativo.
+                    </p>
+                </div>
+
+                <div class="principle-card">
+                    <div class="principle-header">
+                        <div class="principle-icon">L</div>
+                        <h3 class="principle-title">Liskov Substitution</h3>
+                    </div>
+                    <p class="principle-description">
+                        <strong>Sustitución sin romper nada:</strong><br>
+                        Las clases hijas deben poder reemplazar a las clases padre sin problemas.
+                        <br><br>
+                        <strong>Analogía:</strong> Un control remoto debe funcionar con cualquier TV de esa marca.
+                    </p>
+                </div>
+
+                <div class="principle-card">
+                    <div class="principle-header">
+                        <div class="principle-icon">I</div>
+                        <h3 class="principle-title">Interface Segregation</h3>
+                    </div>
+                    <p class="principle-description">
+                        <strong>No forzar métodos innecesarios:</strong><br>
+                        No obligues a una clase a implementar métodos que no va a usar.
+                        <br><br>
+                        <strong>Ejemplo:</strong> Interface separadas para trabajadores y seres vivos.
+                    </p>
+                </div>
+
+                <div class="principle-card">
+                    <div class="principle-header">
+                        <div class="principle-icon">D</div>
+                        <h3 class="principle-title">Dependency Inversion</h3>
+                    </div>
+                    <p class="principle-description">
+                        <strong>Depender de abstracciones:</strong><br>
+                        Las clases importantes deben depender de interfaces, no de implementaciones concretas.
+                        <br><br>
+                        <strong>Analogía:</strong> Un enchufe permite conectar cualquier aparato eléctrico.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4.1: Ejemplo Single Responsibility Principle -->
+        <div class="slide has-code" id="slide-4-1">
+            <h2 class="section-title">S - Single Responsibility Principle</h2>
+            
+            <div class="highlight-box">
+                <h3 class="highlight-title">Cada clase debe tener una sola razón para cambiar</h3>
+                <p>Una clase debe hacer una cosa y hacerla bien. Si una clase tiene múltiples responsabilidades, cambios en una pueden afectar a la otra.</p>
+            </div>
+
+            <div class="comparison-grid">
+                <div class="comparison-card bad-example">
+                    <h3 class="comparison-title">❌ Malo - Múltiples Responsabilidades</h3>
+                    <div class="code-container">
+                        <div class="code-content">
+<span class="keyword">class</span> <span class="class">Usuario</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, nombre, email):
+        self.nombre = nombre
+        self.email = email
+    
+    <span class="comment"># Responsabilidad 1: Gestionar datos</span>
+    <span class="keyword">def</span> <span class="function">obtener_nombre</span>(self):
+        <span class="keyword">return</span> self.nombre
+    
+    <span class="comment"># Responsabilidad 2: Enviar emails</span>
+    <span class="keyword">def</span> <span class="function">enviar_email</span>(self, mensaje):
+        print(<span class="string">f"Enviando a {self.email}: {mensaje}"</span>)
+    
+    <span class="comment"># Responsabilidad 3: Guardar en BD</span>
+    <span class="keyword">def</span> <span class="function">guardar_en_db</span>(self):
+        print(<span class="string">f"Guardando {self.nombre} en BD"</span>)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparison-card good-example">
+                    <h3 class="comparison-title">✅ Bueno - Una Responsabilidad</h3>
+                    <div class="code-container">
+                        <div class="code-content">
+<span class="keyword">class</span> <span class="class">Usuario</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, nombre, email):
+        self.nombre = nombre
+        self.email = email
+    
+    <span class="keyword">def</span> <span class="function">obtener_nombre</span>(self):
+        <span class="keyword">return</span> self.nombre
+
+
+<span class="keyword">class</span> <span class="class">EmailService</span>:
+    <span class="keyword">def</span> <span class="function">enviar</span>(self, usuario, mensaje):
+        print(<span class="string">f"Enviando a {usuario.email}: {mensaje}"</span>)
+
+
+<span class="keyword">class</span> <span class="class">UsuarioRepository</span>:
+    <span class="keyword">def</span> <span class="function">guardar</span>(self, usuario):
+        print(<span class="string">f"Guardando {usuario.nombre} en BD"</span>)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h3 class="highlight-title">🎯 Beneficios</h3>
+                <p>• <strong>Mantenibilidad:</strong> Cambios en email no afectan datos de usuario<br>
+                • <strong>Reutilización:</strong> EmailService puede usarse con otras clases<br>
+                • <strong>Testing:</strong> Cada clase se puede probar independientemente</p>
+            </div>
+        </div>
+
+        <!-- Slide 4.2: Ejemplo Open/Closed Principle -->
+        <div class="slide has-code" id="slide-4-2">
+            <h2 class="section-title">O - Open/Closed Principle</h2>
+            
+            <div class="highlight-box">
+                <h3 class="highlight-title">Abierto para extensión, cerrado para modificación</h3>
+                <p>Debes poder agregar nuevas funcionalidades sin modificar el código existente. Usar abstracciones para esto.</p>
+            </div>
+
+            <div class="comparison-grid">
+                <div class="comparison-card bad-example">
+                    <h3 class="comparison-title">❌ Malo - Modificar código existente</h3>
+                    <div class="code-container">
+                        <div class="code-content">
+<span class="keyword">class</span> <span class="class">CalculadoraDescuento</span>:
+    <span class="keyword">def</span> <span class="function">calcular</span>(self, precio, tipo_cliente):
+        <span class="keyword">if</span> tipo_cliente == <span class="string">"regular"</span>:
+            <span class="keyword">return</span> precio
+        <span class="keyword">elif</span> tipo_cliente == <span class="string">"premium"</span>:
+            <span class="keyword">return</span> precio * <span class="string">0.9</span>
+        <span class="keyword">elif</span> tipo_cliente == <span class="string">"vip"</span>:  <span class="comment"># Nuevo!</span>
+            <span class="keyword">return</span> precio * <span class="string">0.8</span>  <span class="comment"># Modificando</span>
+        <span class="keyword">else</span>:
+            <span class="keyword">return</span> precio
+
+
+<span class="comment"># Para agregar nuevo tipo, hay que modificar la clase</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparison-card good-example">
+                    <h3 class="comparison-title">✅ Bueno - Extensible sin modificar</h3>
+                    <div class="code-container">
+                        <div class="code-content">
+<span class="keyword">from</span> abc <span class="keyword">import</span> ABC, abstractmethod
+
+
+<span class="keyword">class</span> <span class="class">EstrategiaDescuento</span>(ABC):
+    <span class="keyword">@abstractmethod</span>
+    <span class="keyword">def</span> <span class="function">aplicar</span>(self, precio):
+        <span class="keyword">pass</span>
+
+
+<span class="keyword">class</span> <span class="class">DescuentoRegular</span>(EstrategiaDescuento):
+    <span class="keyword">def</span> <span class="function">aplicar</span>(self, precio):
+        <span class="keyword">return</span> precio
+
+
+<span class="keyword">class</span> <span class="class">DescuentoPremium</span>(EstrategiaDescuento):
+    <span class="keyword">def</span> <span class="function">aplicar</span>(self, precio):
+        <span class="keyword">return</span> precio * <span class="string">0.9</span>
+
+
+<span class="keyword">class</span> <span class="class">DescuentoVIP</span>(EstrategiaDescuento):  <span class="comment"># Nuevo!</span>
+    <span class="keyword">def</span> <span class="function">aplicar</span>(self, precio):        <span class="comment"># Sin modificar</span>
+        <span class="keyword">return</span> precio * <span class="string">0.8</span>        <span class="comment"># código existente</span>
+
+
+<span class="keyword">class</span> <span class="class">CalculadoraDescuento</span>:
+    <span class="keyword">def</span> <span class="function">calcular</span>(self, precio, estrategia):
+        <span class="keyword">return</span> estrategia.aplicar(precio)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h3 class="highlight-title">🎯 Beneficios</h3>
+                <p>• <strong>Sin riesgo:</strong> No rompes código existente al agregar funcionalidad<br>
+                • <strong>Flexibilidad:</strong> Fácil agregar nuevos tipos de descuento<br>
+                • <strong>Mantenimiento:</strong> Cada estrategia es independiente</p>
+            </div>
+        </div>
+
+        <!-- Slide 4.3: Ejemplo Liskov Substitution Principle -->
+        <div class="slide has-code" id="slide-4-3">
+            <h2 class="section-title">L - Liskov Substitution Principle</h2>
+            
+            <div class="highlight-box">
+                <h3 class="highlight-title">Las clases hijas deben poder sustituir a sus padres</h3>
+                <p>Si tienes una clase padre, cualquier clase hija debe poder usarse en su lugar sin romper el programa.</p>
+            </div>
+
+            <div class="comparison-grid">
+                <div class="comparison-card bad-example">
+                    <h3 class="comparison-title">❌ Malo - Viola LSP</h3>
+                    <div class="code-container">
+                        <div class="code-content">
+<span class="keyword">class</span> <span class="class">Rectangulo</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, ancho, alto):
+        self.ancho = ancho
+        self.alto = alto
+    
+    <span class="keyword">def</span> <span class="function">area</span>(self):
+        <span class="keyword">return</span> self.ancho * self.alto
+
+
+<span class="keyword">class</span> <span class="class">Cuadrado</span>(Rectangulo):
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, lado):
+        super().__init__(lado, lado)
+    
+    <span class="comment"># Problema: comportamiento inesperado</span>
+    <span class="keyword">def</span> <span class="function">set_ancho</span>(self, ancho):
+        self.ancho = ancho
+        self.alto = ancho  <span class="comment"># Rompe expectativa!</span>
+
+
+<span class="comment"># Esto funciona mal:</span>
+<span class="keyword">def</span> <span class="function">probar_rectangulo</span>(rect):
+    rect.set_ancho(<span class="string">5</span>)
+    rect.set_alto(<span class="string">4</span>)
+    <span class="comment"># Esperamos área = 20, pero cuadrado dará 16!</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparison-card good-example">
+                    <h3 class="comparison-title">✅ Bueno - Respeta LSP</h3>
+                    <div class="code-container">
+                        <div class="code-content">
+<span class="keyword">from</span> abc <span class="keyword">import</span> ABC, abstractmethod
+
+
+<span class="keyword">class</span> <span class="class">Forma</span>(ABC):
+    <span class="keyword">@abstractmethod</span>
+    <span class="keyword">def</span> <span class="function">area</span>(self):
+        <span class="keyword">pass</span>
+
+
+<span class="keyword">class</span> <span class="class">Rectangulo</span>(Forma):
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, ancho, alto):
+        self.ancho = ancho
+        self.alto = alto
+    
+    <span class="keyword">def</span> <span class="function">area</span>(self):
+        <span class="keyword">return</span> self.ancho * self.alto
+
+
+<span class="keyword">class</span> <span class="class">Cuadrado</span>(Forma):
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, lado):
+        self.lado = lado
+    
+    <span class="keyword">def</span> <span class="function">area</span>(self):
+        <span class="keyword">return</span> self.lado * self.lado
+
+
+<span class="comment"># Ambas se pueden usar igual:</span>
+<span class="keyword">def</span> <span class="function">calcular_area_total</span>(formas):
+    <span class="keyword">return</span> sum(forma.area() <span class="keyword">for</span> forma <span class="keyword">in</span> formas)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h3 class="highlight-title">🎯 Beneficios</h3>
+                <p>• <strong>Predictibilidad:</strong> Las clases hijas se comportan como esperamos<br>
+                • <strong>Polimorfismo seguro:</strong> Puedes usar cualquier subclase sin sorpresas<br>
+                • <strong>Confiabilidad:</strong> El código es más robusto y confiable</p>
+            </div>
+        </div>
+
+        <!-- Slide 4.4: Ejemplo Interface Segregation Principle -->
+        <div class="slide has-code" id="slide-4-4">
+            <h2 class="section-title">I - Interface Segregation Principle</h2>
+            
+            <div class="highlight-box">
+                <h3 class="highlight-title">Interfaces específicas son mejores que una general</h3>
+                <p>No fuerces a una clase a implementar métodos que no necesita. Mejor divide en interfaces pequeñas y específicas.</p>
+            </div>
+
+            <div class="comparison-grid">
+                <div class="comparison-card bad-example">
+                    <h3 class="comparison-title">❌ Malo - Interface muy grande</h3>
+                    <div class="code-container">
+                        <div class="code-content">
+<span class="keyword">from</span> abc <span class="keyword">import</span> ABC, abstractmethod
+
+
+<span class="keyword">class</span> <span class="class">Trabajador</span>(ABC):
+    <span class="keyword">@abstractmethod</span>
+    <span class="keyword">def</span> <span class="function">trabajar</span>(self):
+        <span class="keyword">pass</span>
+    
+    <span class="keyword">@abstractmethod</span>
+    <span class="keyword">def</span> <span class="function">comer</span>(self):  <span class="comment"># ¿Y los robots?</span>
+        <span class="keyword">pass</span>
+    
+    <span class="keyword">@abstractmethod</span>
+    <span class="keyword">def</span> <span class="function">dormir</span>(self):  <span class="comment"># ¿Y los robots?</span>
+        <span class="keyword">pass</span>
+
+
+<span class="keyword">class</span> <span class="class">Robot</span>(Trabajador):
+    <span class="keyword">def</span> <span class="function">trabajar</span>(self):
+        print(<span class="string">"Robot trabajando"</span>)
+    
+    <span class="keyword">def</span> <span class="function">comer</span>(self):
+        <span class="keyword">pass</span>  <span class="comment"># No come, pero obligado a implementar</span>
+    
+    <span class="keyword">def</span> <span class="function">dormir</span>(self):
+        <span class="keyword">pass</span>  <span class="comment"># No duerme, pero obligado a implementar</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparison-card good-example">
+                    <h3 class="comparison-title">✅ Bueno - Interfaces segregadas</h3>
+                    <div class="code-container">
+                        <div class="code-content">
+<span class="keyword">from</span> abc <span class="keyword">import</span> ABC, abstractmethod
+
+
+<span class="keyword">class</span> <span class="class">Trabajador</span>(ABC):
+    <span class="keyword">@abstractmethod</span>
+    <span class="keyword">def</span> <span class="function">trabajar</span>(self):
+        <span class="keyword">pass</span>
+
+
+<span class="keyword">class</span> <span class="class">SerVivo</span>(ABC):
+    <span class="keyword">@abstractmethod</span>
+    <span class="keyword">def</span> <span class="function">comer</span>(self):
+        <span class="keyword">pass</span>
+    
+    <span class="keyword">@abstractmethod</span>
+    <span class="keyword">def</span> <span class="function">dormir</span>(self):
+        <span class="keyword">pass</span>
+
+
+<span class="keyword">class</span> <span class="class">Humano</span>(Trabajador, SerVivo):
+    <span class="keyword">def</span> <span class="function">trabajar</span>(self):
+        print(<span class="string">"Humano trabajando"</span>)
+    
+    <span class="keyword">def</span> <span class="function">comer</span>(self):
+        print(<span class="string">"Humano comiendo"</span>)
+    
+    <span class="keyword">def</span> <span class="function">dormir</span>(self):
+        print(<span class="string">"Humano durmiendo"</span>)
+
+
+<span class="keyword">class</span> <span class="class">Robot</span>(Trabajador):  <span class="comment"># Solo implementa lo que necesita</span>
+    <span class="keyword">def</span> <span class="function">trabajar</span>(self):
+        print(<span class="string">"Robot trabajando"</span>)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h3 class="highlight-title">🎯 Beneficios</h3>
+                <p>• <strong>Flexibilidad:</strong> Cada clase implementa solo lo que necesita<br>
+                • <strong>Claridad:</strong> Interfaces específicas son más fáciles de entender<br>
+                • <strong>Mantenimiento:</strong> Cambios en una interface no afectan otras</p>
+            </div>
+        </div>
+
+        <!-- Slide 4.5: Ejemplo Dependency Inversion Principle -->
+        <div class="slide has-code" id="slide-4-5">
+            <h2 class="section-title">D - Dependency Inversion Principle</h2>
+            
+            <div class="highlight-box">
+                <h3 class="highlight-title">Depende de abstracciones, no de implementaciones concretas</h3>
+                <p>Las clases de alto nivel no deben depender de clases de bajo nivel. Ambas deben depender de abstracciones.</p>
+            </div>
+
+            <div class="comparison-grid">
+                <div class="comparison-card bad-example">
+                    <h3 class="comparison-title">❌ Malo - Dependencia directa</h3>
+                    <div class="code-container">
+                        <div class="code-content">
+<span class="keyword">class</span> <span class="class">EmailSender</span>:
+    <span class="keyword">def</span> <span class="function">enviar</span>(self, mensaje, destinatario):
+        print(<span class="string">f"Email enviado a {destinatario}: {mensaje}"</span>)
+
+
+<span class="keyword">class</span> <span class="class">NotificacionService</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(self):
+        <span class="comment"># Dependencia directa de EmailSender</span>
+        self.email_sender = EmailSender()
+    
+    <span class="keyword">def</span> <span class="function">notificar</span>(self, mensaje, usuario):
+        <span class="comment"># Solo puede enviar emails</span>
+        self.email_sender.enviar(mensaje, usuario.email)
+
+
+<span class="comment"># Problema: Para agregar SMS hay que modificar la clase</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparison-card good-example">
+                    <h3 class="comparison-title">✅ Bueno - Depende de abstracción</h3>
+                    <div class="code-container">
+                        <div class="code-content">
+<span class="keyword">from</span> abc <span class="keyword">import</span> ABC, abstractmethod
+
+
+<span class="keyword">class</span> <span class="class">NotificationSender</span>(ABC):
+    <span class="keyword">@abstractmethod</span>
+    <span class="keyword">def</span> <span class="function">enviar</span>(self, mensaje, destinatario):
+        <span class="keyword">pass</span>
+
+
+<span class="keyword">class</span> <span class="class">EmailSender</span>(NotificationSender):
+    <span class="keyword">def</span> <span class="function">enviar</span>(self, mensaje, destinatario):
+        print(<span class="string">f"Email enviado a {destinatario}: {mensaje}"</span>)
+
+
+<span class="keyword">class</span> <span class="class">SMSSender</span>(NotificationSender):
+    <span class="keyword">def</span> <span class="function">enviar</span>(self, mensaje, destinatario):
+        print(<span class="string">f"SMS enviado a {destinatario}: {mensaje}"</span>)
+
+
+<span class="keyword">class</span> <span class="class">NotificacionService</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, sender: NotificationSender):
+        <span class="comment"># Depende de abstracción</span>
+        self.sender = sender
+    
+    <span class="keyword">def</span> <span class="function">notificar</span>(self, mensaje, destinatario):
+        <span class="comment"># Puede usar cualquier implementación</span>
+        self.sender.enviar(mensaje, destinatario)
+
+
+<span class="comment"># Uso flexible:</span>
+email_service = NotificacionService(EmailSender())
+sms_service = NotificacionService(SMSSender())
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h3 class="highlight-title">🎯 Beneficios</h3>
+                <p>• <strong>Flexibilidad:</strong> Fácil cambiar implementaciones sin modificar código<br>
+                • <strong>Testing:</strong> Puedes usar mocks para probar<br>
+                • <strong>Reutilización:</strong> El mismo servicio funciona con diferentes implementaciones</p>
+            </div>
+        </div>
+
+        <!-- Slide 5: Código Limpio -->
+        <div class="slide has-code" id="slide-9">
+            <h2 class="section-title">Clean Code - Código Limpio</h2>
+            
+            <div class="highlight-box">
+                <h3 class="highlight-title">¿Qué es el código limpio?</h3>
+                <p>Es código que se lee como un libro bien escrito: claro, fácil de entender y sin ambigüedades.</p>
+            </div>
+
+            <div class="comparison-grid">
+                <div class="comparison-card bad-example">
+                    <h3 class="comparison-title">❌ Malo</h3>
+                    <div class="code-container">
+                        <div class="code-content">
+<span class="keyword">def</span> <span class="function">calcular</span>():
+    d = <span class="string">5</span>  <span class="comment"># ¿d de qué?</span>
+    <span class="keyword">return</span> d * <span class="string">1.21</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparison-card good-example">
+                    <h3 class="comparison-title">✅ Bueno</h3>
+                    <div class="code-container">
+                        <div class="code-content">
+<span class="keyword">def</span> <span class="function">calcular_precio_con_iva</span>():
+    precio_base = <span class="string">5.00</span>
+    IVA = <span class="string">1.21</span>
+    <span class="keyword">return</span> precio_base * IVA
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-grid">
+                <div class="principle-card">
+                    <div class="principle-header">
+                        <div class="principle-icon">📝</div>
+                        <h3 class="principle-title">Nombres Significativos</h3>
+                    </div>
+                    <p class="principle-description">
+                        <strong>Regla de oro:</strong> Si necesitas un comentario para explicar qué hace una variable, el nombre no es bueno.
+                    </p>
+                </div>
+
+                <div class="principle-card">
+                    <div class="principle-header">
+                        <div class="principle-icon">🔧</div>
+                        <h3 class="principle-title">Funciones Pequeñas</h3>
+                    </div>
+                    <p class="principle-description">
+                        <strong>Máximo 20 líneas:</strong> Es más fácil entender y probar una función que hace una cosa simple.
+                    </p>
+                </div>
+
+                <div class="principle-card">
+                    <div class="principle-header">
+                        <div class="principle-icon">💬</div>
+                        <h3 class="principle-title">Comentarios Necesarios</h3>
+                    </div>
+                    <p class="principle-description">
+                        <strong>El código debe explicarse por sí mismo.</strong> Solo comenta el "por qué", no el "qué".
+                    </p>
+                </div>
+
+                <div class="principle-card">
+                    <div class="principle-header">
+                        <div class="principle-icon">⚠️</div>
+                        <h3 class="principle-title">Manejo de Errores</h3>
+                    </div>
+                    <p class="principle-description">
+                        <strong>Sé específico:</strong> Captura errores específicos y registra información útil para el debug.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Ejemplo de Código Limpio -->
+        <div class="slide has-code" id="slide-10">
+            <h2 class="section-title">Ejemplo Práctico: Código Limpio en Python</h2>
+            
+            <div class="code-container">
+                <div class="code-header">
+                    <div class="code-dots">
+                        <div class="code-dot"></div>
+                        <div class="code-dot"></div>
+                        <div class="code-dot"></div>
+                    </div>
+                    <div class="code-title">user_validator.py</div>
+                </div>
+                <div class="code-content">
+<span class="comment"># Ejemplo de código limpio - Python 3.12</span>
+<span class="keyword">import</span> re
+<span class="keyword">from</span> dataclasses <span class="keyword">import</span> dataclass
+<span class="keyword">from</span> typing <span class="keyword">import</span> List
+
+
+<span class="keyword">@dataclass</span>
+<span class="keyword">class</span> <span class="class">ValidationResult</span>:
+    is_valid: bool
+    errors: List[str]
+
+
+<span class="keyword">class</span> <span class="class">UserValidator</span>:
+    MIN_AGE = <span class="string">18</span>
+    EMAIL_PATTERN = <span class="string">r'^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'</span>
+    
+    <span class="keyword">def</span> <span class="function">validate_user</span>(self, user) -> ValidationResult:
+        errors = []
+        
+        self._validate_age(user.age, errors)
+        self._validate_email(user.email, errors)
+        
+        <span class="keyword">return</span> ValidationResult(len(errors) == <span class="string">0</span>, errors)
+    
+    <span class="keyword">def</span> <span class="function">_validate_age</span>(self, age: int, errors: List[str]) -> None:
+        <span class="keyword">if</span> age < self.MIN_AGE:
+            errors.append(<span class="string">"Usuario debe ser mayor de edad"</span>)
+    
+    <span class="keyword">def</span> <span class="function">_validate_email</span>(self, email: str, errors: List[str]) -> None:
+        <span class="keyword">if</span> <span class="keyword">not</span> re.match(self.EMAIL_PATTERN, email):
+            errors.append(<span class="string">"Formato de email inválido"</span>)
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h3 class="highlight-title">¿Qué hace que este código sea limpio?</h3>
+                <p>• <strong>Nombres descriptivos:</strong> UserValidator, validate_user, MIN_AGE<br>
+                • <strong>Funciones pequeñas:</strong> Cada método tiene una responsabilidad específica<br>
+                • <strong>Type hints:</strong> Especifica tipos para mejor documentación<br>
+                • <strong>Constantes:</strong> MIN_AGE y EMAIL_PATTERN son fáciles de modificar<br>
+                • <strong>Separación de responsabilidades:</strong> Validación de edad y email por separado</p>
+            </div>
+        </div>
+
+        <!-- Slide 7: Principios de Despliegue -->
+        <div class="slide" id="slide-11">
+            <h2 class="section-title">2.3 Principios de Despliegue</h2>
+            
+            <div class="highlight-box">
+                <h3 class="highlight-title">¿Qué son los Principios de Despliegue?</h3>
+                <p>Son las reglas para "poner en funcionamiento" tu software en el mundo real. Es como la diferencia entre cocinar en tu casa (desarrollo) y servir en un restaurante (producción): necesitas procesos más rigurosos.</p>
+            </div>
+
+            <div class="content-grid">
+                <div class="principle-card">
+                    <div class="principle-header">
+                        <div class="principle-icon">🚀</div>
+                        <h3 class="principle-title">Preparación para Producción</h3>
+                    </div>
+                    <p class="principle-description">
+                        • <strong>Configuration Management:</strong> Separar configuración del código<br>
+                        • <strong>Variables de entorno:</strong> Información sensible fuera del código<br>
+                        • <strong>Health Checks:</strong> URLs que verifican el estado de la app<br>
+                        • <strong>Logs estructurados:</strong> Para análisis automatizado
+                    </p>
+                </div>
+
+                <div class="principle-card">
+                    <div class="principle-header">
+                        <div class="principle-icon">🔄</div>
+                        <h3 class="principle-title">DevOps Básico</h3>
+                    </div>
+                    <p class="principle-description">
+                        • <strong>Continuous Integration:</strong> Integrar cambios automáticamente<br>
+                        • <strong>Continuous Deployment:</strong> Desplegar si las pruebas pasan<br>
+                        • <strong>Infrastructure as Code:</strong> Describir infraestructura con código<br>
+                        • <strong>Monitoring:</strong> Vigilar que todo funcione
+                    </p>
+                </div>
+
+                <div class="principle-card">
+                    <div class="principle-header">
+                        <div class="principle-icon">📦</div>
+                        <h3 class="principle-title">Containerización</h3>
+                    </div>
+                    <p class="principle-description">
+                        <strong>¿Qué es un contenedor?</strong><br>
+                        Una "caja" que incluye tu aplicación y todo lo necesario para funcionar.<br><br>
+                        <strong>Beneficios:</strong> Consistencia, aislamiento, escalabilidad
+                    </p>
+                </div>
+
+                <div class="principle-card">
+                    <div class="principle-header">
+                        <div class="principle-icon">🔒</div>
+                        <h3 class="principle-title">Seguridad Básica</h3>
+                    </div>
+                    <p class="principle-description">
+                        • <strong>HTTPS obligatorio:</strong> Encriptar comunicación<br>
+                        • <strong>Gestión de secretos:</strong> Contraseñas fuera del código<br>
+                        • <strong>Actualizaciones:</strong> Parches de seguridad constantes<br>
+                        • <strong>Acceso mínimo:</strong> Solo lo necesario
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Actividades Prácticas -->
+        <div class="slide has-code" id="slide-12">
+            <h2 class="section-title">Actividades Prácticas</h2>
+            
+            <div class="activity-card">
+                <div class="activity-header">
+                    <div class="activity-number">1</div>
+                    <h3 class="activity-title">Análisis y Refactorización</h3>
+                    <div class="activity-duration">20 min</div>
+                </div>
+                
+                <div class="code-container">
+                    <div class="code-header">
+                        <div class="code-dots">
+                            <div class="code-dot"></div>
+                            <div class="code-dot"></div>
+                            <div class="code-dot"></div>
+                        </div>
+                        <div class="code-title">Código Problemático</div>
+                    </div>
+                    <div class="code-content">
+<span class="comment"># Código problemático en Python</span>
+<span class="keyword">def</span> <span class="function">main</span>():
+    d = input(<span class="string">"Ingrese datos: "</span>)
+    parts = d.split(<span class="string">","</span>)
+    a = int(parts[<span class="string">0</span>])
+    n = parts[<span class="string">1</span>]
+    
+    <span class="keyword">if</span> a > <span class="string">0</span> <span class="keyword">and</span> a < <span class="string">150</span> <span class="keyword">and</span> n:
+        print(<span class="string">"OK"</span>)
+    <span class="keyword">else</span>:
+        print(<span class="string">"Error"</span>)
+
+
+<span class="keyword">if</span> <span class="function">__name__</span> == <span class="string">"__main__"</span>:
+    main()
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <h3 class="highlight-title">Problemas identificados:</h3>
+                    <p>• Nombres de variables no descriptivos<br>
+                    • Falta validación de parámetros<br>
+                    • Manejo de errores básico<br>
+                    • Clase con responsabilidad múltiple</p>
+                </div>
+            </div>
+
+            <div class="activity-card">
+                <div class="activity-header">
+                    <div class="activity-number">2</div>
+                    <h3 class="activity-title">Principios SOLID en Acción</h3>
+                    <div class="activity-duration">25 min</div>
+                </div>
+                
+                <p><strong>Diseñar un sistema básico de notificaciones que demuestre:</strong></p>
+                <ul style="margin: 1rem 0;">
+                    <li><strong>SRP:</strong> Una clase para cada tipo de notificación</li>
+                    <li><strong>OCP:</strong> Fácil agregar nuevos tipos sin modificar código existente</li>
+                    <li><strong>DIP:</strong> Usar interfaces en lugar de clases concretas</li>
+                </ul>
+
+                <div class="code-container">
+                    <div class="code-header">
+                        <div class="code-dots">
+                            <div class="code-dot"></div>
+                            <div class="code-dot"></div>
+                            <div class="code-dot"></div>
+                        </div>
+                        <div class="code-title">Estructura Propuesta</div>
+                    </div>
+                    <div class="code-content">
+<span class="keyword">from</span> abc <span class="keyword">import</span> ABC, abstractmethod
+
+
+<span class="keyword">class</span> <span class="class">NotificationSender</span>(ABC):
+    <span class="keyword">@abstractmethod</span>
+    <span class="keyword">def</span> <span class="function">send</span>(self, message: str, recipient: str) -> None:
+        <span class="keyword">pass</span>
+
+
+<span class="keyword">class</span> <span class="class">EmailNotification</span>(NotificationSender):
+    <span class="keyword">def</span> <span class="function">send</span>(self, message: str, recipient: str) -> None:
+        <span class="comment"># Implementación para email</span>
+        <span class="keyword">pass</span>
+
+
+<span class="keyword">class</span> <span class="class">SMSNotification</span>(NotificationSender):
+    <span class="keyword">def</span> <span class="function">send</span>(self, message: str, recipient: str) -> None:
+        <span class="comment"># Implementación para SMS</span>
+        <span class="keyword">pass</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="activity-card">
+                <div class="activity-header">
+                    <div class="activity-number">3</div>
+                    <h3 class="activity-title">Configuración de Proyecto</h3>
+                    <div class="activity-duration">15 min</div>
+                </div>
+                
+                <ol style="margin: 1rem 0;">
+                    <li>Crear estructura básica de proyecto Python con entorno virtual</li>
+                    <li>Identificar dependencias esenciales (requirements.txt)</li>
+                    <li>Definir configuración de ambiente de desarrollo vs producción</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Slide 9: Herramientas -->
+        <div class="slide" id="slide-13">
+            <h2 class="section-title">Herramientas Esenciales</h2>
+            
+            <div class="content-grid">
+                <div class="principle-card">
+                    <div class="principle-header">
+                        <div class="principle-icon">💻</div>
+                        <h3 class="principle-title">Para Desarrollo</h3>
+                    </div>
+                    <div class="tool-grid">
+                        <div class="tool-item">
+                            <div class="tool-name">PyCharm / VS Code</div>
+                            <div class="tool-description">IDEs principales para Python</div>
+                        </div>
+                        <div class="tool-item">
+                            <div class="tool-name">pip y venv</div>
+                            <div class="tool-description">Gestión de dependencias</div>
+                        </div>
+                        <div class="tool-item">
+                            <div class="tool-name">Git</div>
+                            <div class="tool-description">Control de versiones</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="principle-card">
+                    <div class="principle-header">
+                        <div class="principle-icon">🔍</div>
+                        <h3 class="principle-title">Para Calidad de Código</h3>
+                    </div>
+                    <div class="tool-grid">
+                        <div class="tool-item">
+                            <div class="tool-name">pylint / flake8</div>
+                            <div class="tool-description">Análisis de calidad</div>
+                        </div>
+                        <div class="tool-item">
+                            <div class="tool-name">black</div>
+                            <div class="tool-description">Formateador automático</div>
+                        </div>
+                        <div class="tool-item">
+                            <div class="tool-name">pytest</div>
+                            <div class="tool-description">Framework de pruebas</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h3 class="highlight-title">Métricas Básicas de Calidad</h3>
+                <p>• <strong>Complejidad por método:</strong> < 10<br>
+                • <strong>Cobertura de pruebas:</strong> > 70%<br>
+                • <strong>Duplicación de código:</strong> < 5%<br>
+                • <strong>Tiempo de build:</strong> < 5 minutos</p>
+            </div>
+        </div>
+
+        <!-- Slide 10: Autoevaluación y Cierre -->
+        <div class="slide" id="slide-14">
+            <h2 class="section-title">Autoevaluación y Verificación</h2>
+            
+            <div class="content-grid">
+                <div class="principle-card">
+                    <div class="principle-header">
+                        <div class="principle-icon">❓</div>
+                        <h3 class="principle-title">Preguntas Clave (5 min)</h3>
+                    </div>
+                    <ol style="margin: 1rem 0; padding-left: 1.5rem;">
+                        <li>¿Cuáles son los tres tipos de principios de codificación?</li>
+                        <li>¿Qué significa el principio de Responsabilidad Única?</li>
+                        <li>¿Por qué es importante validar parámetros en las funciones?</li>
+                        <li>¿Cuál es la diferencia entre desarrollo y producción?</li>
+                        <li>¿Qué hace que el código sea "limpio"?</li>
+                    </ol>
+                </div>
+
+                <div class="principle-card">
+                    <div class="principle-header">
+                        <div class="principle-icon">✅</div>
+                        <h3 class="principle-title">Verificación de Conceptos</h3>
+                    </div>
+                    <p><strong>Domino si puedo explicar:</strong></p>
+                    <ul style="margin: 1rem 0; padding-left: 1.5rem;">
+                        <li>Los principios de preparación antes de codificar</li>
+                        <li>Los 5 principios SOLID con ejemplos simples</li>
+                        <li>La importancia de nombres descriptivos</li>
+                        <li>Conceptos básicos de DevOps y containerización</li>
+                        <li>Principios de seguridad en despliegue</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="activity-card">
+                <div class="activity-header">
+                    <div class="activity-number">📚</div>
+                    <h3 class="activity-title">Recursos para Profundizar</h3>
+                </div>
+                
+                <div class="content-grid">
+                    <div class="principle-card">
+                        <div class="principle-header">
+                            <div class="principle-icon">📖</div>
+                            <h3 class="principle-title">Lectura Esencial</h3>
+                        </div>
+                        <ul style="margin: 1rem 0; padding-left: 1.5rem;">
+                            <li>Martin, R. <em>Clean Code</em> - Capítulos 1-3</li>
+                            <li>PEP 8 - Guía de estilo oficial de Python</li>
+                            <li>Real Python - Best Practices y Clean Code</li>
+                        </ul>
+                    </div>
+
+                    <div class="principle-card">
+                        <div class="principle-header">
+                            <div class="principle-icon">💡</div>
+                            <h3 class="principle-title">Práctica Adicional</h3>
+                        </div>
+                        <ul style="margin: 1rem 0; padding-left: 1.5rem;">
+                            <li>Ejercicios de refactorización en GitHub</li>
+                            <li>Code reviews de proyectos open source</li>
+                            <li>Configuración de entornos virtuales</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-header" style="margin-top: 3rem;">
+                <h1 class="slide-title" style="font-size: 2rem;">¡Gracias por su atención!</h1>
+                <p class="slide-subtitle">¿Preguntas?</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-button" onclick="previousSlide()" id="prevBtn">‹</button>
+        <button class="nav-button" onclick="nextSlide()" id="nextBtn">›</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                if (i === index) {
+                    slide.style.display = 'block';
+                    slide.classList.add('fade-in');
+                    setTimeout(() => slide.classList.remove('fade-in'), 600);
+                } else {
+                    slide.style.display = 'none';
+                }
+            });
+
+            // Update progress bar
+            const progress = ((index + 1) / totalSlides) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+
+            // Update navigation buttons
+            document.getElementById('prevBtn').style.display = index === 0 ? 'none' : 'block';
+            document.getElementById('nextBtn').style.display = index === totalSlides - 1 ? 'none' : 'block';
+
+            // Update URL hash
+            window.location.hash = `slide-${index + 1}`;
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                showSlide(currentSlide);
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                showSlide(currentSlide);
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                previousSlide();
+            }
+        });
+
+        // Initialize presentation
+        function initPresentation() {
+            // Check for hash in URL
+            const hash = window.location.hash;
+            if (hash && hash.startsWith('#slide-')) {
+                const slideNumber = parseInt(hash.replace('#slide-', '')) - 1;
+                if (slideNumber >= 0 && slideNumber < totalSlides) {
+                    currentSlide = slideNumber;
+                }
+            }
+            
+            showSlide(currentSlide);
+        }
+
+        // Touch/swipe support for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = touchStartX - touchEndX;
+            
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    nextSlide(); // Swipe left -> next slide
+                } else {
+                    previousSlide(); // Swipe right -> previous slide
+                }
+            }
+        }
+
+        // Smooth scrolling for better UX
+        document.addEventListener('wheel', (e) => {
+            if (Math.abs(e.deltaY) > 50) {
+                if (e.deltaY > 0) {
+                    nextSlide();
+                } else {
+                    previousSlide();
+                }
+            }
+        }, { passive: true });
+
+        // Initialize when page loads
+        window.addEventListener('load', initPresentation);
+
+        // Add some interactive animations
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animation = 'slideIn 0.6s ease-out forwards';
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.principle-card, .info-card, .activity-card').forEach(card => {
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>
